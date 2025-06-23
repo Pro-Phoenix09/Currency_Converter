@@ -1,5 +1,7 @@
-import 'package:firstproj/curvalue.dart';
+import 'dart:convert';
+import 'package:firstproj/secretapi.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 
 class HomePage extends StatefulWidget {
@@ -11,12 +13,33 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State {
   double result = 0;
+  double tomultiplywith = 0;
   TextEditingController textEditingController = TextEditingController();
 
-  @override
+   @override
   void initState() {
     super.initState();
-    CurValue();
+    getINRrate();
+  }
+
+  Future getINRrate() async {
+    try {
+      final res = await  http.get(Uri.parse("https://api.currencyfreaks.com/v2.0/rates/latest?apikey=$curapikey"));
+
+      final data = jsonDecode(res.body);
+
+      if (data['base'] != 'USD') {
+        throw 'an error occured';
+      }
+
+      tomultiplywith = double.parse(data['rates']['INR']);
+      return data;
+    }
+
+
+    catch (e) {
+      throw e.toString();
+    }
   }
 
   @override
@@ -106,7 +129,7 @@ class _HomePageState extends State {
               
                 onSubmitted: (value) {
                   setState(() {
-                    result = double.parse(textEditingController.text)*inrrate;
+                    result = double.parse(textEditingController.text)*tomultiplywith;
                   });
                 },
 
@@ -118,7 +141,7 @@ class _HomePageState extends State {
               child: ElevatedButton(
                 onPressed: () {
                   setState(() {
-                    result = double.parse(textEditingController.text)*inrrate;
+                    result = double.parse(textEditingController.text)*tomultiplywith;
                   });
                 },
 
