@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:firstproj/secretapi.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -24,7 +23,7 @@ class _HomePageState extends State {
 
   Future getINRrate() async {
     try {
-      final res = await  http.get(Uri.parse("https://api.currencyfreaks.com/v2.0/rates/latest?apikey=$curapikey"));
+      final res = await  http.get(Uri.parse("https://api.currencyfreaks.com/v2.0/rates/latest?apikey=2696469591944d8a945189e780d124dc"));
 
       final data = jsonDecode(res.body);
 
