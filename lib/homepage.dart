@@ -1,7 +1,5 @@
-import 'dart:convert';
-
+import 'package:firstproj/curvalue.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 
 class HomePage extends StatefulWidget {
@@ -18,22 +16,7 @@ class _HomePageState extends State {
   @override
   void initState() {
     super.initState();
-    getINRrate();
-  }
-
-  Future getINRrate() async {
-    try {
-      final res = await  http.get(Uri.parse("https://api.currencyfreaks.com/v2.0/rates/latest?apikey=2696469591944d8a945189e780d124dc"));
-
-      final data = jsonDecode(res.body);
-
-      print(data['date']);
-    }
-
-
-    catch (e) {
-      throw e.toString();
-    }
+    CurValue();
   }
 
   @override
@@ -123,7 +106,7 @@ class _HomePageState extends State {
               
                 onSubmitted: (value) {
                   setState(() {
-                    result = double.parse(textEditingController.text)*86.25;
+                    result = double.parse(textEditingController.text)*inrrate;
                   });
                 },
 
@@ -135,7 +118,7 @@ class _HomePageState extends State {
               child: ElevatedButton(
                 onPressed: () {
                   setState(() {
-                    result = double.parse(textEditingController.text)*86.25;
+                    result = double.parse(textEditingController.text)*inrrate;
                   });
                 },
 
